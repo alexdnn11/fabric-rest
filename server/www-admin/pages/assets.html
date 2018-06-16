@@ -22,14 +22,22 @@
 
 <!-- add new -->
 <div ng-hide="ctl.invokeInProgress">
-  <button class="btn btn-primary" type="button">Add</button>
+  <button class="btn btn-primary" type="button" ng-click="ctl.invoke(selectedChannel, selectedCc, selectedPeers, fcn, args)" ng-disabled="form.$invalid">Add</button>
 </div>
 <br>
 <h4>Existing assets:</h4>
 
 <table>
-  <tr ng-repeat="x in cli.exampleAssets">
-    <td>{{ ::x }}</td>
+  <tr>
+    <td>Product</td>
+    <td>Description</td>
+    <td>State</td>
+  </tr>
+  <tr ng-repeat="x in ctl.myAssets">
+    <td>{{ x.product }}</td>
+    <td>{{ x.description }}</td>
+    <td>{{ x.state }}</td>
+    <td><button class="btn btn-primary" type="button" ng-click="ctl.invoke(selectedChannel, selectedCc, selectedPeers, fcn, args)" ng-disabled="form.$invalid">Edit</button></td>
   </tr>
 </table>
 

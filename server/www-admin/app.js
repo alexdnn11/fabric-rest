@@ -312,6 +312,17 @@ angular.module('nsd.app',[
         .map(function(key){ return netConfig[key]; });
     }
 
+    function getAssets(type){
+        var exampleAssets = [
+                { product: 'Prod 1 ', description: 'Description 1', state: 'Register',},
+                { product: 'Prod 2 ', description: 'Description 2', state: 'Active',},
+                { product: 'Prod 3 ', description: 'Description 3', state: 'Decision-macing',},
+                { product: 'Prod 4 ', description: 'Description 4', state: 'Inactive',},
+                ];
+
+        return exampleAssets;
+    }
+
     /**
      *
      */
@@ -325,6 +336,7 @@ angular.module('nsd.app',[
       load:_resolveConfig,
       getOrgs: getOrgs,
       getPeers: getPeers,
+      getAssets: getAssets,
 
       get:function(){ return _config; }
     };
