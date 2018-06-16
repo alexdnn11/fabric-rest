@@ -83,6 +83,18 @@ angular.module('nsd.app',[
         name: 'Info',
         guest:false
       }
+    })
+
+    .state('app.assets', {
+        url: 'assets',
+        templateUrl: 'pages/assets.html',
+        controller: 'QueryController',
+        controllerAs: 'ctl',
+        data:{
+            default: true,
+            name: 'My Assets',
+            guest:false
+        }
     });
 
 })

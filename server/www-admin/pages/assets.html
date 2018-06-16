@@ -1,0 +1,36 @@
+<h2>My Assets</h2>
+
+<h4>Add new asset:</h4>
+
+<form name="asset" novalidate>
+
+  <div class="form-group">
+    <label>Product</label>
+    <input id="productAdd" name="productAdd" class="materialize-input" ng-model="productAdd" required>
+
+    </input>
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    <textarea id="descriptionAdd" name="descriptionAdd" class="materialize-textarea"   ng-model="descriptionAdd" required>
+
+    </textarea>
+  </div>
+
+</form>
+
+<!-- add new -->
+<div ng-hide="ctl.invokeInProgress">
+  <button class="btn btn-primary" type="button">Add</button>
+</div>
+<br>
+<h4>Existing assets:</h4>
+
+<table>
+  <tr ng-repeat="x in cli.exampleAssets">
+    <td>{{ ::x }}</td>
+  </tr>
+</table>
+
+

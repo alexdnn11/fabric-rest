@@ -13,6 +13,28 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.transaction = null;
   ctl.invokeInProgress = false;
 
+  ctl.exampleAssets =
+          [{
+              product: 'Prod 1 ',
+              description: 'Description 1',
+              state: 'Register',
+          },
+          {
+              product: 'Prod 2 ',
+              description: 'Description 2',
+              state: 'Active',
+          },
+          {
+              product: 'Prod 3 ',
+              description: 'Description 3',
+              state: 'Decision-making',
+          },
+          {
+              product: 'Prod 4 ',
+              description: 'Description 4',
+              state: 'Inactive',
+          }];
+
   // init
   var orgs = ConfigLoader.getOrgs();
   var allPeers = []
