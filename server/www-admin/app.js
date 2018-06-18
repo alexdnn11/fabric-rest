@@ -85,6 +85,18 @@ angular.module('nsd.app',[
       }
     })
 
+    .state('app.ledger', {
+      url: 'ledger',
+      templateUrl: 'pages/ledger.html',
+      controller: 'QueryController',
+      controllerAs: 'ctl',
+      data:{
+        name: 'Ledger',
+        guest:false,
+        // default:true
+      }
+    })
+
     .state('app.assets', {
         url: 'assets',
         templateUrl: 'pages/assets.html',
@@ -313,12 +325,86 @@ angular.module('nsd.app',[
     }
 
     function getAssets(type){
-        var exampleAssets = [
-                { product: 'Prod 1 ', description: 'Description 1', state: 'Register',},
-                { product: 'Prod 2 ', description: 'Description 2', state: 'Active',},
-                { product: 'Prod 3 ', description: 'Description 3', state: 'Decision-macing',},
-                { product: 'Prod 4 ', description: 'Description 4', state: 'Inactive',},
+        var exampleAssets =[];
+        switch (type) {
+            case 'my':
+                exampleAssets = [
+                    {product: 'Prod 1 ', description: 'Description 1', state: 'Register',},
+                    {product: 'Prod 2 ', description: 'Description 2', state: 'Active',},
+                    {product: 'Prod 3 ', description: 'Description 3', state: 'Decision-macing',},
+                    {product: 'Prod 4 ', description: 'Description 4', state: 'Inactive',},
                 ];
+                break;
+            case 'all':
+                exampleAssets = [
+                    {
+                        owner: 'OrgA',
+                        product: 'Prod 1 ',
+                        description: 'Description 1',
+                        state: 'Active',
+                        lchanged: '6/1/2018'
+                    },
+                    {
+                        owner: 'OrgB',
+                        product: 'Prod 2 ',
+                        description: 'Description 2',
+                        state: 'Active',
+                        lchanged: '6/2/2018'
+                    },
+                    {
+                        owner: 'OrgC',
+                        product: 'Prod 3 ',
+                        description: 'Description 3',
+                        state: 'Active',
+                        lchanged: '6/3/2018'
+                    },
+                    {
+                        owner: 'OrgC',
+                        product: 'Prod 4 ',
+                        description: 'Description 4',
+                        state: 'Active',
+                        lchanged: '6/4/2018'
+                    },
+                    {
+                        owner: 'OrgA',
+                        product: 'Prod 5 ',
+                        description: 'Description 5',
+                        state: 'Active',
+                        lchanged: '6/5/2018'
+                    },
+                    {
+                        owner: 'OrgB',
+                        product: 'Prod 6 ',
+                        description: 'Description 6',
+                        state: 'Active',
+                        lchanged: '6/6/2018'
+                    },
+                    {
+                        owner: 'OrgA',
+                        product: 'Prod 7 ',
+                        description: 'Description 7',
+                        state: 'Active',
+                        lchanged: '6/7/2018'
+                    },
+                    {
+                        owner: 'OrgC',
+                        product: 'Prod 8 ',
+                        description: 'Description 8',
+                        state: 'Active',
+                        lchanged: '6/8/2018'
+                    },
+                    {
+                        owner: 'OrgB',
+                        product: 'Prod 9 ',
+                        description: 'Description 9',
+                        state: 'Active',
+                        lchanged: '6/9/2018'
+                    },
+                ];
+                break;
+            default:
+                break;
+        }
 
         return exampleAssets;
     }

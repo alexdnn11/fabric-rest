@@ -15,7 +15,13 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
   // init
   var orgs = ConfigLoader.getOrgs();
-  ctl.myAssets = ConfigLoader.getAssets();
+  ctl.myAssets = ConfigLoader.getAssets('my');
+
+  ctl.Assets = ConfigLoader.getAssets('all');
+  $scope.sortType     = 'owner'; // set the default sort type
+  $scope.sortReverse  = false;  // set the default sort order
+  $scope.searchFish   = '';
+
   var allPeers = [];
   orgs.forEach(function(org){
     var peers = ConfigLoader.getPeers(org.id);
@@ -130,6 +136,9 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   //
   ctl.getChannels();
   $scope.$watch('selectedChannel', ctl.getChaincodes );
+
+
+
 
 }
 
