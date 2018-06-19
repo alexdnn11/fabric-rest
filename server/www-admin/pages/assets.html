@@ -22,9 +22,8 @@
 
 <!-- add new -->
 <div ng-hide="ctl.invokeInProgress">
-  <button class="btn btn-primary" type="button" ng-click="ctl.invoke(selectedChannel, selectedCc, selectedPeers, fcn, args)" ng-disabled="form.$invalid">Add</button>
+  <button class="btn btn-primary" type="button" ng-click="ctl.add(productAdd, descriptionAdd);" ng-disabled="form.$invalid">Add</button>
 </div>
-<br>
 <h4>Existing assets:</h4>
 
 <table>

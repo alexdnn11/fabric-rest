@@ -27,6 +27,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     var peers = ConfigLoader.getPeers(org.id);
     allPeers.push.apply(allPeers, peers);
   });
+
   // allPeers = JSON.parse(JSON.stringify(allPeers));
   // allPeers.unshift({
   //   "server-hostname": "Select peers"
@@ -35,8 +36,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
   ctl.getPeers = function(){
     return allPeers;
-  }
-
+  };
 
   ctl.getChannels = function(){
     return ChannelService.list().then(function(dataList){
@@ -53,7 +53,23 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     });
   };
 
+  ctl.add = function(product, description){
+    ctl.arg = [];
 
+    ctl.arg['Name']  = product;
+    ctl.arg['Desc']  = description;
+    ctl.arg['State'] = 'Register';
+    ctl.arg['Org']   = ConfigLoader.get().org;
+
+    ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });;
+    ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
+    ctl.peers = [''+ctl.arg['Org']+'/peer0", "'+ctl.arg['Org']+'/peer1'];
+    ctl.peers = ['a/peer0', 'a/peer1'];
+
+    ctl.fcn ='add';
+
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'"]');
+  }
 
   ctl.invoke = function(channel, cc, peers, fcn, args){
     try{
