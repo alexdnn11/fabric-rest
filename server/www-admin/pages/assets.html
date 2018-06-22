@@ -57,14 +57,21 @@
 
       <span ng-hide="edit['EditProcess'+x.id]">{{ x.state }}</span>
 
-      <md-input-container>
-        <md-select ng-model="stateEdit" ng-hide="!edit['EditProcess'+x.id]">
-            <md-option><em>None</em></md-option>
-            <md-option ng-repeat="state in ctl.States" ng-value="state.name">
-              {{state.name}}
-            </md-option>
-        </md-select>
-      </md-input-container>
+      <!--<md-input-container>-->
+        <!--<label>State</label>-->
+        <!--<md-select ng-model="stateEdit" ng-hide="!edit['EditProcess'+x.id]">-->
+            <!--<md-option><em>None</em></md-option>-->
+            <!--<md-option ng-repeat="state in ctl.States" ng-value="state.name">-->
+              <!--{{state.name}}-->
+            <!--</md-option>-->
+        <!--</md-select>-->
+      <!--</md-input-container>-->
+
+      <!-- state selector -->
+      <div class="form-group" ng-hide="!edit['EditProcess'+x.id]">
+        <select ng-model="stateEdit" material-select watch ng-options="o.name for o in ctl.States" placeholder="{{ x.state }}" required>
+        </select>
+      </div>
 
     </td>
 
