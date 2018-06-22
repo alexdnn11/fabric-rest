@@ -329,76 +329,144 @@ angular.module('nsd.app',[
         switch (type) {
             case 'my':
                 exampleAssets = [
-                    {product: 'Prod 1 ', description: 'Description 1', state: 'Register',},
-                    {product: 'Prod 2 ', description: 'Description 2', state: 'Active',},
-                    {product: 'Prod 3 ', description: 'Description 3', state: 'Decision-macing',},
-                    {product: 'Prod 4 ', description: 'Description 4', state: 'Inactive',},
+                    {
+                        id         : 1,
+                        product    : 'Prod 1 ',
+                        description: 'Description 1',
+                        state      : 'Active',
+                        lchanged   : '6/1/2018'
+                    },
+                    {
+                        id         : 2,
+                        product    : 'Prod 2 ',
+                        description: 'Description 2',
+                        state      : 'Active',
+                        lchanged   : '6/2/2018'
+                    },
+                    {
+                        id         : 3,
+                        product    : 'Prod 3 ',
+                        description: 'Description 3',
+                        state      : 'Active',
+                        lchanged   : '6/3/2018'
+                    },
+                    {
+                        id         : 4,
+                        product    : 'Prod 4 ',
+                        description: 'Description 4',
+                        state      : 'Active',
+                        lchanged   : '6/4/2018'
+                    },
+                    {
+                        id         : 5,
+                        product    : 'Prod 5 ',
+                        description: 'Description 5',
+                        state      : 'Active',
+                        lchanged   : '6/5/2018'
+                    },
+                    {
+                        id         : 6,
+                        product    : 'Prod 6 ',
+                        description: 'Description 6',
+                        state      : 'Active',
+                        lchanged   : '6/6/2018'
+                    },
+                    {
+                        id         : 7,
+                        product    : 'Prod 7 ',
+                        description: 'Description 7',
+                        state      : 'Active',
+                        lchanged   : '6/7/2018'
+                    },
+                    {
+                        id         : 8,
+                        product    : 'Prod 8 ',
+                        description: 'Description 8',
+                        state      : 'Active',
+                        lchanged   : '6/8/2018'
+                    },
+                    {
+                        id         : 9,
+                        product    : 'Prod 9 ',
+                        description: 'Description 9',
+                        state      : 'Active',
+                        lchanged   : '6/9/2018'
+                    },
                 ];
                 break;
             case 'all':
                 exampleAssets = [
                     {
-                        owner: 'OrgA',
-                        product: 'Prod 1 ',
+                        id         : 1,
+                        owner      : 'OrgA',
+                        product    : 'Prod 1 ',
                         description: 'Description 1',
-                        state: 'Active',
-                        lchanged: '6/1/2018'
+                        state      : 'Active',
+                        lchanged   : '6/1/2018'
                     },
                     {
-                        owner: 'OrgB',
-                        product: 'Prod 2 ',
+                        id         : 2,
+                        owner      : 'OrgB',
+                        product    : 'Prod 2 ',
                         description: 'Description 2',
-                        state: 'Active',
-                        lchanged: '6/2/2018'
+                        state      : 'Active',
+                        lchanged   : '6/2/2018'
                     },
                     {
-                        owner: 'OrgC',
-                        product: 'Prod 3 ',
+                        id         : 3,
+                        owner      : 'OrgC',
+                        product    : 'Prod 3 ',
                         description: 'Description 3',
-                        state: 'Active',
-                        lchanged: '6/3/2018'
+                        state      : 'Active',
+                        lchanged   : '6/3/2018'
                     },
                     {
-                        owner: 'OrgC',
-                        product: 'Prod 4 ',
+                        id         : 4,
+                        owner      : 'OrgC',
+                        product    : 'Prod 4 ',
                         description: 'Description 4',
-                        state: 'Active',
-                        lchanged: '6/4/2018'
+                        state      : 'Active',
+                        lchanged   : '6/4/2018'
                     },
                     {
-                        owner: 'OrgA',
-                        product: 'Prod 5 ',
+                        id         : 5,
+                        owner      : 'OrgA',
+                        product    : 'Prod 5 ',
                         description: 'Description 5',
-                        state: 'Active',
-                        lchanged: '6/5/2018'
+                        state      : 'Active',
+                        lchanged   : '6/5/2018'
                     },
                     {
-                        owner: 'OrgB',
-                        product: 'Prod 6 ',
+                        id         : 6,
+                        owner      : 'OrgB',
+                        product    : 'Prod 6 ',
                         description: 'Description 6',
-                        state: 'Active',
-                        lchanged: '6/6/2018'
+                        state      : 'Active',
+                        lchanged   : '6/6/2018'
                     },
                     {
-                        owner: 'OrgA',
-                        product: 'Prod 7 ',
+                        id         : 7,
+                        owner      : 'OrgA',
+                        product    : 'Prod 7 ',
                         description: 'Description 7',
-                        state: 'Active',
-                        lchanged: '6/7/2018'
+                        state      : 'Active',
+                        lchanged   : '6/7/2018'
                     },
                     {
-                        owner: 'OrgC',
-                        product: 'Prod 8 ',
+                        id         : 8,
+                        owner      : 'OrgC',
+                        product    : 'Prod 8 ',
                         description: 'Description 8',
-                        state: 'Active',
-                        lchanged: '6/8/2018'
+                        state      : 'Active',
+                        lchanged   : '6/8/2018'
                     },
                     {
-                        owner: 'OrgB',
-                        product: 'Prod 9 ',
+                        id         : 9,
+                        owner      : 'OrgB',
+                        product    : 'Prod 9 ',
                         description: 'Description 9',
-                        state: 'Active',
-                        lchanged: '6/9/2018'
+                        state      : 'Active',
+                        lchanged   : '6/9/2018'
                     },
                 ];
                 break;
@@ -409,6 +477,14 @@ angular.module('nsd.app',[
         return exampleAssets;
     }
 
+    function getStates(){
+        var States = [      {id: '1', name : 'Register'},
+                            {id: '2', name : 'Active'},
+                            {id: '3', name : 'Decision-making'},
+                            {id: '4', name : 'Inactive'},];
+        // var States = ['Register','Active','Decision-making','Inactive'];
+        return States;
+    }
     /**
      *
      */
@@ -421,6 +497,7 @@ angular.module('nsd.app',[
     return {
       load:_resolveConfig,
       getOrgs: getOrgs,
+      getStates: getStates,
       getPeers: getPeers,
       getAssets: getAssets,
 

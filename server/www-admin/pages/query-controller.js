@@ -12,10 +12,13 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.chaincodes = [];
   ctl.transaction = null;
   ctl.invokeInProgress = false;
+  ctl.EditProcess = false;
 
   // init
   var orgs = ConfigLoader.getOrgs();
   ctl.myAssets = ConfigLoader.getAssets('my');
+  ctl.States = ConfigLoader.getStates();
+  ctl.States = ConfigLoader.getStates();
 
   ctl.Assets = ConfigLoader.getAssets('all');
   $scope.sortType     = 'owner'; // set the default sort type
@@ -61,10 +64,9 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     ctl.arg['State'] = 'Register';
     ctl.arg['Org']   = ConfigLoader.get().org;
 
-    ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });;
+    ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
     ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
-    ctl.peers = [''+ctl.arg['Org']+'/peer0", "'+ctl.arg['Org']+'/peer1'];
-    ctl.peers = ['a/peer0', 'a/peer1'];
+    ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
 
     ctl.fcn ='add';
 
