@@ -57,20 +57,14 @@
 
       <span ng-hide="edit['EditProcess'+x.id]">{{ x.state }}</span>
 
-      <!--<mat-form-field name="stateEdit" id="stateEdit" ng-model="stateEdit" required ng-hide="!edit['EditProcess'+x.id]">-->
-        <!--<mat-select placeholder="State">-->
-          <!--<mat-option>None</mat-option>-->
-          <!--<mat-option *ngFor="let state of ctl.States" [value]="state">{{state}}</mat-option>-->
-        <!--</mat-select>-->
-      <!--</mat-form-field>-->
-
-      <mat-form-field>
-        <mat-select placeholder="Favorite food">
-          <mat-option *ngFor="let state of ctl.States" [value]="state.id">
-            {{ state.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <md-input-container>
+        <md-select ng-model="stateEdit" ng-hide="!edit['EditProcess'+x.id]">
+            <md-option><em>None</em></md-option>
+            <md-option ng-repeat="state in ctl.States" ng-value="state.name">
+              {{state.name}}
+            </md-option>
+        </md-select>
+      </md-input-container>
 
     </td>
 
@@ -85,5 +79,6 @@
     </td>
   </tr>
 </table>
+
 
 

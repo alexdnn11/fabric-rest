@@ -478,12 +478,9 @@ angular.module('nsd.app',[
     }
 
     function getStates(){
-        var States = [      {id: '1', name : 'Register'},
-                            {id: '2', name : 'Active'},
-                            {id: '3', name : 'Decision-making'},
-                            {id: '4', name : 'Inactive'},];
-        // var States = ['Register','Active','Decision-making','Inactive'];
-        return States;
+
+        return ('Register Active Decision-making Inactive').split(' ').map(function (state){ return {name: state};});
+
     }
     /**
      *
