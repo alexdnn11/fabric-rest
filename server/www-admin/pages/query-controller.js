@@ -65,22 +65,26 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    ctl.arg['State'] = 'Register';
+    ctl.arg['State'] = 'Registered';
+    ctl.arg['Time']  = Math.floor(Date.now() / 1000);
+
     ctl.fcn ='add';
 
-    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'"]');
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'", "'+ctl.arg['Time']+'"]');
   };
 
   ctl.edit = function(id, product, description, state){
 
-    ctl.arg['ID']  = id;
+    ctl.arg['ID']  = id
+
+
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
     ctl.arg['State'] = state.name;
+    ctl.arg['Time']  = Math.floor(Date.now() / 1000);
+    ctl.fcn ='update';
 
-    ctl.fcn ='edit';
-
-    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['ID']+'","'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'"]');
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+ctl.arg['Time']+'","'+ctl.arg['ID']+'"]');
   }
 
   ctl.invoke = function(channel, cc, peers, fcn, args){

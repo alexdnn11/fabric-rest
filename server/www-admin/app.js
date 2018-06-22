@@ -479,7 +479,7 @@ angular.module('nsd.app',[
 
     function getStates(){
 
-        return ('Register Active Decision-making Inactive').split(' ').map(function (state){ return {name: state};});
+        return ('Registered Active Decision-making Inactive').split(' ').map(function (state){ return {name: state};});
 
     }
     /**
