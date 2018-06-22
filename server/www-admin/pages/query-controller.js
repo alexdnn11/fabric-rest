@@ -13,12 +13,17 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.transaction = null;
   ctl.invokeInProgress = false;
   ctl.EditProcess = false;
+  ctl.arg = [];
 
   // init
   var orgs = ConfigLoader.getOrgs();
   ctl.myAssets = ConfigLoader.getAssets('my');
   ctl.States = ConfigLoader.getStates();
   ctl.States = ConfigLoader.getStates();
+  ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
+  ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
+  ctl.arg['Org']   = ConfigLoader.get().org;
+  ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
 
   ctl.Assets = ConfigLoader.getAssets('all');
   $scope.sortType     = 'owner'; // set the default sort type
@@ -57,20 +62,25 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   };
 
   ctl.add = function(product, description){
-    ctl.arg = [];
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
     ctl.arg['State'] = 'Register';
-    ctl.arg['Org']   = ConfigLoader.get().org;
-
-    ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
-    ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
-    ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
-
     ctl.fcn ='add';
 
     ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'"]');
+  };
+
+  ctl.edit = function(id, product, description, state){
+
+    ctl.arg['ID']  = id;
+    ctl.arg['Name']  = product;
+    ctl.arg['Desc']  = description;
+    ctl.arg['State'] = state.name;
+
+    ctl.fcn ='edit';
+
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['ID']+'","'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'"]');
   }
 
   ctl.invoke = function(channel, cc, peers, fcn, args){
