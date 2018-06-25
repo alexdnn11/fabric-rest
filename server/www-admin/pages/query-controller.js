@@ -19,7 +19,6 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   var orgs = ConfigLoader.getOrgs();
   ctl.myAssets = ConfigLoader.getAssets('my');
   ctl.States = ConfigLoader.getStates();
-  ctl.States = ConfigLoader.getStates();
   ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
   ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
   ctl.arg['Org']   = ConfigLoader.get().org;
@@ -65,7 +64,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    ctl.arg['State'] = 'Registered';
+    ctl.arg['State'] = getIdState('Registered');
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
 
     ctl.fcn ='add';
@@ -80,7 +79,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    ctl.arg['State'] = state.name;
+    ctl.arg['State'] = getIdState(state.name);
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
     ctl.fcn ='update';
 
@@ -139,6 +138,25 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     return transaction;
   }
 
+  function getIdState(state){
+    var index;
+    for(index = 0; index <ctl.States.length; ++index){
+      if(ctl.States[index].name === state){
+        return ctl.States[index].id;
+      }
+    }
+    return 0;
+  }
+
+    function getNameState(state){
+        var index;
+        for(index = 0; index <ctl.States.length; ++index){
+            if(ctl.States[index].id === state){
+                return ctl.States[index].name;
+            }
+        }
+        return 0;
+    }
 
   ctl.query = function(channel, cc, peer, fcn, args){
     try{
