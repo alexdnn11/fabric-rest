@@ -14,10 +14,13 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.invokeInProgress = false;
   ctl.EditProcess = false;
   ctl.arg = [];
+  ctl.AssetsNew = [];
+  ctl.Obj =[];
 
   // init
   var orgs = ConfigLoader.getOrgs();
   ctl.myAssets = ConfigLoader.getAssets('my');
+
   ctl.States = ConfigLoader.getStates();
   ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
   ctl.chaincode =  Object.create({}, { name: { value: 'reference'} });
@@ -25,7 +28,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
 
   ctl.Assets = ConfigLoader.getAssets('all');
-  $scope.sortType     = 'owner'; // set the default sort type
+  $scope.sortType     = 'product'; // set the default sort type
   $scope.sortReverse  = false;  // set the default sort order
   $scope.searchFish   = '';
 
@@ -83,7 +86,8 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
     ctl.fcn ='update';
 
-    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+ctl.arg['Time']+'","'+ctl.arg['ID']+'"]');
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'", "'+ctl.arg['Time']+'","'+ctl.arg['ID']+'"]');
+
   }
 
   ctl.invoke = function(channel, cc, peers, fcn, args){
@@ -110,6 +114,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
       })
       .finally(function(){
         ctl.invokeInProgress = false;
+        ctl.read(ctl.arg['Org']);
       });
   }
 
@@ -135,6 +140,15 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   }
 
   function getQTxResult(transaction){
+    if(typeof transaction.result[0].products !== 'undefined'){
+        ctl.AssetsNew = transaction.result[0].products;
+        ctl.AssetsNew.map(function (el) {
+          el.productDateUpdated = (new Date(parseInt(el.productDateUpdated) *1000)).toLocaleString();
+          el.productState = getNameState(el.productState);
+        });
+
+    }
+
     return transaction;
   }
 
@@ -148,14 +162,21 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     return 0;
   }
 
-    function getNameState(state){
+    function getNameState(state) {
         var index;
-        for(index = 0; index <ctl.States.length; ++index){
-            if(ctl.States[index].id === state){
+        for (index = 0; index < ctl.States.length; ++index) {
+            if (ctl.States[index].id === state) {
                 return ctl.States[index].name;
             }
         }
         return 0;
+    };
+
+    ctl.read = function(args){
+        ctl.fcn ='query';
+        ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+args+'"]');
+
+
     }
 
   ctl.query = function(channel, cc, peer, fcn, args){

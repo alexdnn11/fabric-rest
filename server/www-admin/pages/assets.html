@@ -25,8 +25,8 @@
   <button class="btn btn-primary" type="button" ng-click="ctl.add(productAdd, descriptionAdd);" ng-disabled="form.$invalid">Add</button>
 </div>
 <h4>Existing assets:</h4>
-
-<table>
+<table ng-init="ctl.read(ctl.arg['Org']);">
+<!--<table ng-init="ctl.read('a'); ctl.Obj = JSON.parse(ctl.result); ctl.AssetsNew = ctl.Obj.result[0].products;">-->
   <tr>
     <td>ID</td>
     <td>Product</td>
@@ -34,32 +34,32 @@
     <td>State</td>
     <td>Last Changed</td>
   </tr>
-  <tr ng-repeat="x in ctl.myAssets">
+  <tr ng-repeat="x in ctl.AssetsNew">
     <td>
 
-      <span ng-model="idEdit" ng-hide="edit['EditProcess'+x.id]">{{ x.id }}</span>
+      <span ng-model="idEdit" ng-hide="edit['EditProcess'+x.productID]">{{ x.productID }}</span>
 
     </td>
     <td>
-      <span ng-hide="edit['EditProcess'+x.id]">{{ x.product }}</span>
-      <input id="productEdit" name="productEdit" placeholder="{{ x.product }}" class="materialize-input" ng-model="productEdit" required ng-hide="!edit['EditProcess'+x.id]">
+      <span ng-hide="edit['EditProcess'+x.productID]">{{ x.productName }}</span>
+      <input id="productEdit" name="productEdit" placeholder="{{ x.productName }}" class="materialize-input" ng-model="productEdit" required ng-hide="!edit['EditProcess'+x.productID]">
       </input>
 
     </td>
     <td>
 
-      <span ng-hide="edit['EditProcess'+x.id]">{{ x.description }}</span>
-      <input type="text" id="descriptionEdit" name="descriptionEdit" placeholder="{{ x.description }}" class="materialize-input" ng-model="descriptionEdit" required ng-hide="!edit['EditProcess'+x.id]">
+      <span ng-hide="edit['EditProcess'+x.productID]">{{ x.productDesc }}</span>
+      <input type="text" id="descriptionEdit" name="descriptionEdit" placeholder="{{ x.productDesc }}" class="materialize-input" ng-model="descriptionEdit" required ng-hide="!edit['EditProcess'+x.productID]">
       </input>
 
     </td>
     <td>
 
-      <span ng-hide="edit['EditProcess'+x.id]">{{ x.state }}</span>
+      <span ng-hide="edit['EditProcess'+x.productID]">{{ x.productState }}</span>
 
       <!-- state selector -->
-      <div class="form-group" ng-hide="!edit['EditProcess'+x.id]">
-        <select ng-model="stateEdit" material-select watch ng-options="o.name for o in ctl.States" placeholder="{{ x.state }}" required>
+      <div class="form-group" ng-hide="!edit['EditProcess'+x.productID]">
+        <select ng-model="stateEdit" material-select watch ng-options="o.name for o in ctl.States" placeholder="{{ x.productState }}" required>
         </select>
       </div>
 
@@ -67,12 +67,12 @@
 
     <td>
 
-      <span>{{ x.lchanged  }}</span>
+      <span>{{ x.productDateUpdated  }}</span>
 
     </td>
     <td>
-      <button ng-hide="!edit['EditProcess'+x.id]" class="btn btn-primary" type="button" ng-click="ctl.edit(x.id, productEdit, descriptionEdit, stateEdit); edit['EditProcess'+x.id]=false;" ng-disabled="form.$invalid">Save</button>
-      <button ng-hide="edit['EditProcess'+x.id]" class="btn btn-primary" type="button" ng-click="edit['EditProcess'+x.id]=true; descriptionEdit=x.description; productEdit=x.product; stateEdit.name=x.state;" ng-disabled="form.$invalid">Edit</button>
+      <button ng-hide="!edit['EditProcess'+x.productID]" class="btn btn-primary" type="button" ng-click="ctl.edit(x.productID, productEdit, descriptionEdit, stateEdit); edit['EditProcess'+x.productID]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Save</button>
+      <button ng-hide="edit['EditProcess'+x.productID]" class="btn btn-primary" type="button" ng-click="edit['EditProcess'+x.productID]=true; descriptionEdit=x.productDesc; productEdit=x.productName; stateEdit.name=x.productState;" ng-disabled="form.$invalid">Edit</button>
     </td>
   </tr>
 </table>

@@ -10,7 +10,7 @@
     </div>
   </form>
 
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped" ng-init="ctl.read('all');">
 
     <thead>
     <tr>
@@ -60,13 +60,13 @@
     </thead>
 
     <tbody>
-    <tr ng-repeat="asset in ctl.Assets | orderBy:sortType:sortReverse | filter:searchAsset">
-      <td>{{ asset.id }}</td>
-      <td>{{ asset.owner }}</td>
-      <td>{{ asset.product }}</td>
-      <td>{{ asset.state }}</td>
-      <td>{{ asset.description }}</td>
-      <td>{{ asset.lchanged }}</td>
+    <tr ng-repeat="asset in ctl.AssetsNew | orderBy:sortType:sortReverse | filter:searchAsset">
+      <td>{{ asset.productID }}</td>
+      <td>{{ asset.productOrg }}</td>
+      <td>{{ asset.productName }}</td>
+      <td>{{ asset.productState }}</td>
+      <td>{{ asset.productDesc }}</td>
+      <td>{{ asset.productDateUpdated }}</td>
     </tr>
     </tbody>
 
