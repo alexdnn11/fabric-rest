@@ -19,7 +19,6 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
   // init
   var orgs = ConfigLoader.getOrgs();
-  ctl.myAssets = ConfigLoader.getAssets('my');
 
   ctl.States = ConfigLoader.getStates();
   ctl.channel  = Object.create({}, { channel_id: { value: 'common'} });
@@ -27,7 +26,6 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.arg['Org']   = ConfigLoader.get().org;
   ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
 
-  ctl.Assets = ConfigLoader.getAssets('all');
   $scope.sortType     = 'product'; // set the default sort type
   $scope.sortReverse  = false;  // set the default sort order
   $scope.searchFish   = '';
@@ -67,7 +65,8 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    ctl.arg['State'] = getIdState('Registered');
+    // ctl.arg['State'] = getIdState('Registered');
+    ctl.arg['State'] = 'Registered';
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
 
     ctl.fcn ='add';
@@ -82,7 +81,8 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    ctl.arg['State'] = getIdState(state.name);
+    // ctl.arg['State'] = getIdState(state.name);
+    ctl.arg['State'] = state.name;
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
     ctl.fcn ='update';
 
@@ -142,6 +142,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   function getQTxResult(transaction){
     if(typeof transaction.result[0].products !== 'undefined' && transaction.result[0].products !== null){
         ctl.AssetsNew = transaction.result[0].products;
+        console.info(ctl.AssetsNew);
         ctl.AssetsNew.map(function (el) {
           el.productDateUpdated = (new Date(parseInt(el.productDateUpdated) *1000)).toLocaleString();
           el.productState = getNameState(el.productState);
@@ -163,12 +164,9 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   }
 
     function getNameState(state) {
-        var index;
-        for (index = 0; index < ctl.States.length; ++index) {
-            if (ctl.States[index].id === state) {
-                return ctl.States[index].name;
-            }
-        }
+    if(typeof Object.values(state) !== 'undefined' && Object.values(state) !== null){
+      return Object.values(state)[0];
+    }
         return 0;
     };
 
