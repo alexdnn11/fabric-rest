@@ -140,7 +140,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   }
 
   function getQTxResult(transaction){
-    if(typeof transaction.result[0].products !== 'undefined'){
+    if(typeof transaction.result[0].products !== 'undefined' && transaction.result[0].products !== null){
         ctl.AssetsNew = transaction.result[0].products;
         ctl.AssetsNew.map(function (el) {
           el.productDateUpdated = (new Date(parseInt(el.productDateUpdated) *1000)).toLocaleString();
