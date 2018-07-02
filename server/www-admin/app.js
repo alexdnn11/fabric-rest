@@ -85,26 +85,25 @@ angular.module('nsd.app',[
       }
     })
 
-    .state('app.ledger', {
-      url: 'ledger',
-      templateUrl: 'pages/ledger.html',
+    .state('app.all', {
+      url: 'all',
+      templateUrl: 'pages/all.html',
       controller: 'QueryController',
       controllerAs: 'ctl',
       data:{
-        name: 'Ledger',
+        name: 'All Products',
         guest:false,
-        // default:true
       }
     })
 
-    .state('app.assets', {
-        url: 'assets',
-        templateUrl: 'pages/assets.html',
+    .state('app.my', {
+        url: 'my',
+        templateUrl: 'pages/my.html',
         controller: 'QueryController',
         controllerAs: 'ctl',
         data:{
             default: true,
-            name: 'My Assets',
+            name: 'My Products',
             guest:false
         }
     });

@@ -60,7 +60,7 @@
     </thead>
 
     <tbody>
-    <tr ng-repeat="asset in ctl.AssetsNew | orderBy:sortType:sortReverse | filter:searchAsset">
+    <tr ng-repeat="asset in ctl.Products | orderBy:sortType:sortReverse | filter:searchAsset">
       <td>{{ asset.productID }}</td>
       <td>{{ asset.productOrg }}</td>
       <td>{{ asset.productName }}</td>

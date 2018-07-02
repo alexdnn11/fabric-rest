@@ -14,7 +14,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.invokeInProgress = false;
   ctl.EditProcess = false;
   ctl.arg = [];
-  ctl.AssetsNew = [];
+  ctl.Products = [];
   ctl.Obj =[];
 
   // init
@@ -35,11 +35,6 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     var peers = ConfigLoader.getPeers(org.id);
     allPeers.push.apply(allPeers, peers);
   });
-
-  // allPeers = JSON.parse(JSON.stringify(allPeers));
-  // allPeers.unshift({
-  //   "server-hostname": "Select peers"
-  // });
 
 
   ctl.getPeers = function(){
@@ -65,11 +60,10 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    // ctl.arg['State'] = getIdState('Registered');
-    ctl.arg['State'] = 'Registered';
+    ctl.arg['State'] = 1;
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
 
-    ctl.fcn ='add';
+    ctl.fcn ='initProduct';
 
     ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'", "'+ctl.arg['Time']+'"]');
   };
@@ -81,8 +75,8 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
     ctl.arg['Name']  = product;
     ctl.arg['Desc']  = description;
-    // ctl.arg['State'] = getIdState(state.name);
-    ctl.arg['State'] = state.name;
+    ctl.arg['State'] = getIdState(state.name);
+    // ctl.arg['State'] = state.name;
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
     ctl.fcn ='update';
 
@@ -141,9 +135,9 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
 
   function getQTxResult(transaction){
     if(typeof transaction.result[0].products !== 'undefined' && transaction.result[0].products !== null){
-        ctl.AssetsNew = transaction.result[0].products;
-        console.info(ctl.AssetsNew);
-        ctl.AssetsNew.map(function (el) {
+        ctl.Products = transaction.result[0].products;
+        console.info(ctl.Products);
+        ctl.Products.map(function (el) {
           el.productDateUpdated = (new Date(parseInt(el.productDateUpdated) *1000)).toLocaleString();
           el.productState = getNameState(el.productState);
         });
@@ -171,7 +165,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     };
 
     ctl.read = function(args){
-        ctl.fcn ='query';
+        ctl.fcn ='queryProductsByOwner';
         ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+args+'"]');
 
 

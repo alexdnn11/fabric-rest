@@ -1,0 +1,76 @@
+<h2>My Products</h2>
+
+<h4>Add new product:</h4>
+
+<form name="asset" novalidate>
+
+  <div class="form-group">
+    <label>Name</label>
+    <input id="nameAdd" name="nameAdd" class="materialize-input" ng-model="nameAdd" required>
+
+    </input>
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    <textarea id="descriptionAdd" name="descriptionAdd" class="materialize-textarea"   ng-model="descriptionAdd" required>
+
+    </textarea>
+  </div>
+
+</form>
+
+<!-- add new -->
+<div ng-hide="ctl.invokeInProgress">
+  <button class="btn btn-primary" type="button" ng-click="ctl.add(nameAdd, descriptionAdd);" ng-disabled="form.$invalid">Add</button>
+</div>
+<h4>Products in stock:</h4>
+<table ng-init="ctl.read(ctl.arg['Org']);">
+<!--<table ng-init="ctl.read('a'); ctl.Obj = JSON.parse(ctl.result); ctl.AssetsNew = ctl.Obj.result[0].products;">-->
+  <tr>
+    <td>Owner</td>
+    <td>Product</td>
+    <td>State</td>
+    <td>Description</td>
+    <td>Last Changed</td>
+  </tr>
+  <tr ng-repeat="product in ctl.Products">
+    <td>
+      <span ng-model="ownerEdit" ng-hide="edit[product.name]">{{ product.owner }}</span>
+      <input id="ownerEdit" name="ownerEdit" placeholder="{{ product.owner }}" class="materialize-input" ng-model="ownerEdit" required ng-hide="!edit[product.name]">
+      </input>
+    </td>
+
+    <td>
+      <span ng-hide="edit[product.name]">{{ product.name }}</span>
+    </td>
+
+    <td>
+      <span ng-hide="edit[product.name]">{{ product.state }}</span>
+      <!-- state selector -->
+      <div class="form-group" ng-hide="!edit[product.name]">
+        <select ng-model="stateEdit" material-select watch ng-options="o.name for o in ctl.States" placeholder="{{ product.state }}" required>
+        </select>
+      </div>
+    </td>
+
+    <td>
+      <span ng-hide="edit[product.name]">{{ product.desc }}</span>
+      <input type="text" id="descriptionEdit" name="descriptionEdit" placeholder="{{ product.desc }}" class="materialize-input" ng-model="descriptionEdit" required ng-hide="!edit[product.name]">
+      </input>
+    </td>
+
+    <td>
+      <span>{{ product.lastUpdated  }}</span>
+    </td>
+
+    <td>
+      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Save</button>
+      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Delete</button>
+      <button ng-hide= "edit[product.name]" class="btn btn-primary" type="button" ng-click="edit[product.name]=true; descriptionEdit=product.desc; ownerEdit=product.owner; stateEdit.name=product.state;" ng-disabled="form.$invalid">Edit</button>
+    </td>
+  </tr>
+</table>
+
+
+
