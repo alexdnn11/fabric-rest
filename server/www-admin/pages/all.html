@@ -1,26 +1,21 @@
-<h2>Ledger</h2>
+<h2>All Products</h2>
+
+<h4>Products of all organizations:</h4>
 
 <!-- show all assets from ledger -->
   <form>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon"><i class="fa fa-search"></i></div>
-        <input type="text" class="form-control" placeholder="Search Assets" ng-model="searchAsset">
+        <input type="text" class="form-control" placeholder="Search Products" ng-model="searchAsset">
       </div>
     </div>
   </form>
 
-  <table class="table table-bordered table-striped" ng-init="ctl.read('all');">
+  <table class="table table-bordered table-striped" ng-init="ctl.all();">
 
     <thead>
     <tr>
-      <td>
-        <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
-          ID
-          <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-          <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
-        </a>
-      </td>
       <td>
         <a href="#" ng-click="sortType = 'owner'; sortReverse = !sortReverse">
           Owner
@@ -29,10 +24,10 @@
         </a>
       </td>
       <td>
-        <a href="#" ng-click="sortType = 'product'; sortReverse = !sortReverse">
+        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
           Product
-          <span ng-show="sortType == 'product' && !sortReverse" class="fa fa-caret-down"></span>
-          <span ng-show="sortType == 'product' && sortReverse" class="fa fa-caret-up"></span>
+          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </td>
       <td>
@@ -43,30 +38,34 @@
         </a>
       </td>
       <td>
-        <a href="#" ng-click="sortType = 'description'; sortReverse = !sortReverse">
+        <a href="#" ng-click="sortType = 'desc'; sortReverse = !sortReverse">
           Description
-          <span ng-show="sortType == 'description' && !sortReverse" class="fa fa-caret-down"></span>
-          <span ng-show="sortType == 'description' && sortReverse" class="fa fa-caret-up"></span>
+          <span ng-show="sortType == 'desc' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'desc' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </td>
       <td>
-        <a href="#" ng-click="sortType = 'lchanged'; sortReverse = !sortReverse">
+        <a href="#" ng-click="sortType = 'lastUpdated'; sortReverse = !sortReverse">
           Last Changed
-          <span ng-show="sortType == 'lchanged' && !sortReverse" class="fa fa-caret-down"></span>
-          <span ng-show="sortType == 'lchanged' && sortReverse" class="fa fa-caret-up"></span>
+          <span ng-show="sortType == 'lastUpdated' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'lastUpdated' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </td>
+      <td>Actions</td>
     </tr>
     </thead>
 
     <tbody>
-    <tr ng-repeat="asset in ctl.Products | orderBy:sortType:sortReverse | filter:searchAsset">
-      <td>{{ asset.productID }}</td>
-      <td>{{ asset.productOrg }}</td>
-      <td>{{ asset.productName }}</td>
-      <td>{{ asset.productState }}</td>
-      <td>{{ asset.productDesc }}</td>
-      <td>{{ asset.productDateUpdated }}</td>
+    <tr ng-repeat="product in ctl.Products | orderBy:sortType:sortReverse | filter:searchAsset">
+      <td>{{ product.owner }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.state }}</td>
+      <td>{{ product.desc }}</td>
+      <td>{{ product.lastUpdated }}</td>
+      <td>
+        <button class="btn btn-primary" type="button" ng-click="ctl.history(product.name);">Show History</button>
+        <button class="btn btn-primary" type="button" ng-click="ctl.ownership(product.name, ctl.arg['Org']);">Request ownership</button>
+      </td>
     </tr>
     </tbody>
 

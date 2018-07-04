@@ -26,7 +26,7 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.arg['Org']   = ConfigLoader.get().org;
   ctl.peers = [ctl.arg['Org']+'/peer0', ctl.arg['Org']+'/peer1'];
 
-  $scope.sortType     = 'product'; // set the default sort type
+  $scope.sortType     = 'name'; // set the default sort type
   $scope.sortReverse  = false;  // set the default sort order
   $scope.searchFish   = '';
 
@@ -68,21 +68,55 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'", "'+ctl.arg['Time']+'"]');
   };
 
-  ctl.edit = function(id, product, description, state){
+  ctl.edit = function(name, description, state, owner){
 
-    ctl.arg['ID']  = id
-
-
-    ctl.arg['Name']  = product;
+    ctl.arg['Name']  = name;
     ctl.arg['Desc']  = description;
     ctl.arg['State'] = getIdState(state.name);
-    // ctl.arg['State'] = state.name;
+    ctl.arg['Owner'] = owner;
     ctl.arg['Time']  = Math.floor(Date.now() / 1000);
-    ctl.fcn ='update';
+    ctl.fcn ='updateProduct';
 
-    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'", "'+ctl.arg['Org']+'", "'+ctl.arg['Time']+'","'+ctl.arg['ID']+'"]');
+    ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'","'+ctl.arg['Desc']+'", "'+ctl.arg['State']+'","'+ctl.arg['Owner']+'", "'+ctl.arg['Time']+'"]');
 
   }
+
+  ctl.delete = function(name){
+
+     ctl.arg['Name']  = name;
+     ctl.fcn ='delete';
+     ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'"]');
+
+  }
+
+  ctl.my = function(args){
+     ctl.fcn ='queryProductsByOwner';
+     ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+args+'"]');
+  }
+
+  ctl.all = function(args){
+     ctl.fcn ="queryProducts";
+     var docType = "product";
+     var owner1   = 'a';
+     var owner2   = 'b';
+     var owner3   = 'c';
+     var result=JSON.stringify({
+          "selector": {
+              "docType": docType,
+              "owner"  : {
+                "$in": [owner1, owner2, owner3]
+              } ,
+          },
+     });
+     ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+encodeURI(result)+'"]');
+     // ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+'\\\"a\\\"'+'"]');
+  }
+
+    ctl.history = function(name){
+        ctl.arg['Name']  = name;
+        ctl.fcn ='getHistoryForProduct';
+        ctl.invoke(ctl.channel, ctl.chaincode, ctl.peers, ctl.fcn, '["'+ctl.arg['Name']+'"]');
+    }
 
   ctl.invoke = function(channel, cc, peers, fcn, args){
     try{
@@ -108,7 +142,9 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
       })
       .finally(function(){
         ctl.invokeInProgress = false;
-        ctl.read(ctl.arg['Org']);
+        // ctl.my(ctl.arg['Org']);
+        // ctl.all();
+        $window.location.reload();
       });
   }
 
@@ -134,12 +170,18 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   }
 
   function getQTxResult(transaction){
-    if(typeof transaction.result[0].products !== 'undefined' && transaction.result[0].products !== null){
-        ctl.Products = transaction.result[0].products;
-        console.info(ctl.Products);
+
+    if(typeof transaction.result !== 'undefined' && transaction.result !== null){
+        var buffer =[];
+        buffer = transaction.result;
+        // console.info(buffer);
+        
+        buffer.forEach(function(el){
+          ctl.Products.push(el.Record);
+        });
         ctl.Products.map(function (el) {
-          el.productDateUpdated = (new Date(parseInt(el.productDateUpdated) *1000)).toLocaleString();
-          el.productState = getNameState(el.productState);
+          el.lastUpdated = (new Date(parseInt(el.lastUpdated) *1000)).toLocaleString();
+          el.state = getNameState(el.state);
         });
 
     }
@@ -157,19 +199,16 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
     return 0;
   }
 
-    function getNameState(state) {
-    if(typeof Object.values(state) !== 'undefined' && Object.values(state) !== null){
-      return Object.values(state)[0];
-    }
+    function getNameState(state){
+        var index;
+        for(index = 0; index <ctl.States.length; ++index){
+            if(ctl.States[index].id === state){
+                return ctl.States[index].name;
+            }
+        }
         return 0;
-    };
-
-    ctl.read = function(args){
-        ctl.fcn ='queryProductsByOwner';
-        ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+args+'"]');
-
-
     }
+
 
   ctl.query = function(channel, cc, peer, fcn, args){
     try{

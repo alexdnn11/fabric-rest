@@ -25,15 +25,17 @@
   <button class="btn btn-primary" type="button" ng-click="ctl.add(nameAdd, descriptionAdd);" ng-disabled="form.$invalid">Add</button>
 </div>
 <h4>Products in stock:</h4>
-<table ng-init="ctl.read(ctl.arg['Org']);">
-<!--<table ng-init="ctl.read('a'); ctl.Obj = JSON.parse(ctl.result); ctl.AssetsNew = ctl.Obj.result[0].products;">-->
+<table class="table table-bordered table-striped" ng-init="ctl.my(ctl.arg['Org']);">
+  <thead>
   <tr>
     <td>Owner</td>
     <td>Product</td>
     <td>State</td>
     <td>Description</td>
     <td>Last Changed</td>
+    <td>Last Changed</td>
   </tr>
+  </thead>
   <tr ng-repeat="product in ctl.Products">
     <td>
       <span ng-model="ownerEdit" ng-hide="edit[product.name]">{{ product.owner }}</span>
@@ -66,7 +68,7 @@
 
     <td>
       <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Save</button>
-      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Delete</button>
+      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.delete(product.name);" ng-disabled="form.$invalid">Delete</button>
       <button ng-hide= "edit[product.name]" class="btn btn-primary" type="button" ng-click="edit[product.name]=true; descriptionEdit=product.desc; ownerEdit=product.owner; stateEdit.name=product.state;" ng-disabled="form.$invalid">Edit</button>
     </td>
   </tr>
