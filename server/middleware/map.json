@@ -1,3 +1,8 @@
 {
-  "middleware":[]
+  "middleware": [
+    {
+      "name": "Chaincode Event Orchestrator",
+      "file": "./orchestrator.js"
+    }
+  ]
 }
