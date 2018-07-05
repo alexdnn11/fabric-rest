@@ -56,6 +56,7 @@ var server = http.createServer(app);
 
 var io = new SocketServer(server, socketOptions);
 socketApp.init(io, {org:ORG});
+socketApp.listen(io, {org:ORG});
 
 server.listen(PORT, function() {
 	logger.info('****************** SERVER STARTED ************************');
