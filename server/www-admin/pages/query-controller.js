@@ -14,7 +14,12 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   ctl.invokeInProgress = false;
   ctl.EditProcess = false;
   ctl.arg = [];
-  ctl.Products = [];
+  ctl.MyProducts = [];
+  ctl.AllProducts = [];
+  ctl.HistoryProduct = [];
+  ctl.showHistory=false;
+  ctl.Orgs = ConfigLoader.getOrgs();
+
   ctl.Obj =[];
 
   // init
@@ -109,7 +114,6 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
           },
      });
      ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+encodeURI(result)+'"]');
-     // ctl.query(ctl.channel, ctl.chaincode, ctl.arg['Org']+'/peer0', ctl.fcn, '["'+'\\\"a\\\"'+'"]');
   }
 
     ctl.history = function(name){
@@ -136,15 +140,18 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
       .then(function(transaction){
         ctl.transaction = transaction;
         ctl.result = getTxResult(transaction);
+          if(ctl.fcn ==="getHistoryForProduct"){
+              ctl.HistoryProduct = JSON.parse(transaction.transactionEnvelope.payload.data.actions[0].payload.action.proposal_response_payload.extension.response.payload);
+              console.info(ctl.HistoryProduct);
+          }
       })
       .catch(function(response){
         ctl.error = response.data || response;
       })
-      .finally(function(){
+      .finally(function(transaction){
         ctl.invokeInProgress = false;
-        // ctl.my(ctl.arg['Org']);
-        // ctl.all();
-        $window.location.reload();
+        ctl.all();
+        ctl.my(ctl.arg['Org']);
       });
   }
 
@@ -170,19 +177,31 @@ function QueryController($scope, ChannelService, ConfigLoader, $log, $q) {
   }
 
   function getQTxResult(transaction){
-
     if(typeof transaction.result !== 'undefined' && transaction.result !== null){
         var buffer =[];
         buffer = transaction.result;
         // console.info(buffer);
-        
-        buffer.forEach(function(el){
-          ctl.Products.push(el.Record);
-        });
-        ctl.Products.map(function (el) {
-          el.lastUpdated = (new Date(parseInt(el.lastUpdated) *1000)).toLocaleString();
-          el.state = getNameState(el.state);
-        });
+
+        if(ctl.fcn ==="queryProductsByOwner"){
+            ctl.MyProducts = [];
+            buffer.forEach(function(el){
+                ctl.MyProducts.push(el.Record);
+            });
+            ctl.MyProducts.map(function (el) {
+                el.lastUpdated = (new Date(parseInt(el.lastUpdated) *1000)).toLocaleString();
+                el.state = getNameState(el.state);
+            });
+
+        } else if( ctl.fcn ==="queryProducts" ){
+            ctl.AllProducts = [];
+            buffer.forEach(function(el){
+                ctl.AllProducts.push(el.Record);
+            });
+            ctl.AllProducts.map(function (el) {
+                el.lastUpdated = (new Date(parseInt(el.lastUpdated) *1000)).toLocaleString();
+                el.state = getNameState(el.state);
+            });
+        }
 
     }
 
