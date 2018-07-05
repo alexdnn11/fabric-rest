@@ -36,11 +36,15 @@
     <td>Last Changed</td>
   </tr>
   </thead>
-  <tr ng-repeat="product in ctl.Products">
+  <tr ng-repeat="product in ctl.MyProducts">
     <td>
+        <!-- state selector -->
+      <div class="form-group" ng-hide="!edit[product.name]">
+         <select ng-model="ownerEdit" material-select watch ng-options="o.id for o in ctl.Orgs" placeholder="{{ product.owner }}" required>
+         </select>
+      </div>
+
       <span ng-model="ownerEdit" ng-hide="edit[product.name]">{{ product.owner }}</span>
-      <input id="ownerEdit" name="ownerEdit" placeholder="{{ product.owner }}" class="materialize-input" ng-model="ownerEdit" required ng-hide="!edit[product.name]">
-      </input>
     </td>
 
     <td>
@@ -67,8 +71,12 @@
     </td>
 
     <td>
-      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);" ng-disabled="form.$invalid">Save</button>
-      <button ng-hide="!edit[product.name]" class="btn btn-primary" type="button" ng-click="ctl.delete(product.name);" ng-disabled="form.$invalid">Delete</button>
+        <p ng-hide= "!edit[product.name]" class="btn-group" style="width: 325px;">
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Save'" ng-click="ctl.edit(product.name, descriptionEdit, stateEdit, ownerEdit); edit[product.name]=false; ctl.read(ctl.arg['Org']);">Save</label>
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Delete'" ng-click="ctl.delete(product.name);">Delete</label>
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Cancel'" ng-click="edit[product.name]=false;">Cancel</label>
+        </p>
+
       <button ng-hide= "edit[product.name]" class="btn btn-primary" type="button" ng-click="edit[product.name]=true; descriptionEdit=product.desc; ownerEdit=product.owner; stateEdit.name=product.state;" ng-disabled="form.$invalid">Edit</button>
     </td>
   </tr>
